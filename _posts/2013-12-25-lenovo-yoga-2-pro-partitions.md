@@ -33,13 +33,13 @@ So, the advertised capacity of 256 GB actually means:
 
 Looking at the Disk Manager, here's the layout you see:
 
-![Disk Layout](../images/2013-12-25-lenovo-yoga-2-pro-partitions/disk-layout.png "Factory disk layout")
+![Disk Layout](http://static.lionhack.com/images/2013-12-25-lenovo-yoga-2-pro-partitions/disk-layout.png "Factory disk layout")
 
-**NOTE:** To open Disk Manager on Windows 8, hit WinKey+X, then choose "Disk Management".
+**NOTE:** To open Disk Manager on Windows 8, hit `WinKey+X`, then choose "Disk Management".
 
 In fact, there is one partition that is not shown here, because it is hidden. Running _diskpart_ on Command Prompt reveals it:
 
-![Diskpart Output](../images/2013-12-25-lenovo-yoga-2-pro-partitions/diskpart-partitions.png "All factory disk partitions")
+![Diskpart Output](http://static.lionhack.com/images/2013-12-25-lenovo-yoga-2-pro-partitions/diskpart-partitions.png "All factory disk partitions")
 
 So what are all these partitions eating up the space? In the past, [there have been complaints][3] about Lenovo messy disk partitioning. Shouldn't it have been solved? Well, it is in fact much better compared to previous Yoga edition. But there are still 7 partitions on the disk - are they really necessary!?
 
@@ -78,9 +78,9 @@ What can be removed from this list? Partitions 1, 2 and 4 are essential for Wind
 
 Before Partition 7 (PBR_DRV) can be removed, we need to copy the factory reset image somewhere, and be able to use it in case we want to do a factory reset (i.e. when you decide to sell or give away this laptop in the future). Luckily, the way [Lenovo set this up][8] it integrates with Windows 8 recovery mechanisms, and is registered as a standard recovery image.
 
-To verify, you can run "_reagentc /info_" on Command Prompt:
+To verify, you can run `reagentc /info` on Command Prompt:
 
-![Reagentc Output](../images/2013-12-25-lenovo-yoga-2-pro-partitions/reagentc-info.png "Windows RE settings")
+![Reagentc Output](http://static.lionhack.com/images/2013-12-25-lenovo-yoga-2-pro-partitions/reagentc-info.png "Windows RE settings")
 
 This shows that Lenovo's factory reset image from Partition 7 has been registered as the recovery image with Windows RE settings. This is good news, because you can now follow [these instructions][8] to create a default Windows USB Recovery Drive.
 
@@ -90,7 +90,7 @@ The instructions are [outlined on Lenovo website][8] and are simple to follow. N
 
 In short the steps are:
 
-  1. Go to Control Panel (WinKey+X, then select Control Panel), and go to Recovery panel
+  1. Go to Control Panel (`WinKey+X`, then select Control Panel), and go to Recovery panel
   2. Select "Create recovery drive" and make sure "Copy the recovery partition from the PC to the recovery drive" checkbox is selected
   3. Follow prompts and insert a USB key when prompted (you need at least the **16 GB** variety)
   4. At the end it will prompt whether you want to delete recovery partition - **DENY this option**, we will delete it manually afterwards
@@ -105,7 +105,7 @@ Backup the files on D: drive. You can either copy them to C: drive (but then the
 
 ### Disk cleanup - removing partitions
 
-Now we are ready to delete Partitions 6 & 7. Start elevated Command Prompt (WinKey+X), and start "_**diskpart**_" utility.
+Now we are ready to delete Partitions 6 & 7. Start elevated Command Prompt (`WinKey+X`), and start "_**diskpart**_" utility.
 
 **!!! WARNING !!!:** Be **extremely cautions** with _diskpart_. Delete wrong partitions will cause laptop to become unusable, and will require a factory reset. (You did create that Recovery USB Disk now, right?)
 
@@ -127,13 +127,13 @@ Here are commands to remove these partitions (in **diskpart**), verify output af
 
 ### Finally, extending C: drive
 
-Now you can go to Disk Management (WinKey+X) and see that the last 2 partitions are gone - it should show as "Unallocated space".
+Now you can go to Disk Management (`WinKey+X`) and see that the last 2 partitions are gone - it should show as "Unallocated space".
 
   * Right-click on Windows8_OS (C:) partition, and choose Extend Volume
   * Verify it is selecting 18GB of unallocated space (the default)
   * Proceed through the wizard (Next > Next > Finish)
 
-![Disk Layout After](../images/2013-12-25-lenovo-yoga-2-pro-partitions/disk-layout-after.png "Disk layout after space reclaimed")
+![Disk Layout After](http://static.lionhack.com/images/2013-12-25-lenovo-yoga-2-pro-partitions/disk-layout-after.png "Disk layout after space reclaimed")
 
 You have now successfully extended your space on C: drive! Enjoy the extra freedom, while it lasts. I have already filled mine with more photos!
 

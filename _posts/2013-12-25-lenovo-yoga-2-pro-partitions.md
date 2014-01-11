@@ -105,7 +105,7 @@ Backup the files on D: drive. You can either copy them to C: drive (but then the
 
 ### Disk cleanup - removing partitions
 
-Now we are ready to delete Partitions 6 & 7. Start elevated Command Prompt (`WinKey+X`), and start "_**diskpart**_" utility.
+Now we are ready to delete Partitions 6 & 7. Start elevated Command Prompt (`WinKey+X`), and start "**_diskpart_**" utility.
 
 **!!! WARNING !!!:** Be **extremely cautions** with _diskpart_. Delete wrong partitions will cause laptop to become unusable, and will require a factory reset. (You did create that Recovery USB Disk now, right?)
 

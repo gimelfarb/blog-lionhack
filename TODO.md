@@ -1,0 +1,26 @@
+# Blog posts to write
+
+  - Windows/.NET Advanced debugging
+    - PDBs, internal structure, GUID
+    - Symbol store, SRCSRV + TFS indexing
+    - Stack trace line numbers
+    - Mini-dumps, first-chance exceptions
+  - Visual Studio Online
+    - Git source control
+    - Scrum work item process
+    - Automated build & deploy
+  - Node.js vs ASP.NET Performance
+    - Apache Bench tests, Node single-thread on multi-core
+  - .NET Exception handling
+    - Global hooks
+    - Propagation, don't catch early, finally/using blocks
+    - Marshal.GetExceptionPointers
+    - Re-throwing
+  - ASP.NET Async model
+  - Dual-mode NT service base
+  - Worker thread template
+    - Polling for work
+    - Interruptable
+  - Application clustering support
+    - Shared state, work queue
+    - Heartbeat, failover, compensation 

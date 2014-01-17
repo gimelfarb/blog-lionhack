@@ -4,7 +4,6 @@
     - PDBs, internal structure, GUID
     - Symbol store, SRCSRV + TFS indexing
     - Stack trace line numbers
-    - Mini-dumps, first-chance exceptions
   - Visual Studio Online
     - Git source control
     - Scrum work item process
@@ -12,6 +11,7 @@
   - Node.js vs ASP.NET Performance
     - Apache Bench tests, Node single-thread on multi-core
   - .NET Exception handling
+    - Mini-dumps, first-chance exceptions
     - Global hooks
     - Propagation, don't catch early, finally/using blocks
     - Marshal.GetExceptionPointers

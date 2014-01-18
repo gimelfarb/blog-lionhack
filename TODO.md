@@ -1,9 +1,6 @@
 # Blog posts to write
 
-  - Windows/.NET Advanced debugging
-    - PDBs, internal structure, GUID
-    - Symbol store, SRCSRV + TFS indexing
-    - Stack trace line numbers
+  - Stack trace line numbers
   - Visual Studio Online
     - Git source control
     - Scrum work item process

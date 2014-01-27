@@ -1,6 +1,7 @@
 # Blog posts to write
 
   - Stack trace line numbers
+  - Multi-targeting assemblies (2.0, 4.0, 4.5)
   - Visual Studio Online
     - Git source control
     - Scrum work item process
@@ -21,3 +22,13 @@
   - Application clustering support
     - Shared state, work queue
     - Heartbeat, failover, compensation 
+  - Advanced debugging
+    - Debugging legacy systems / no source code
+    - Event Log, Fusion Log
+    - Tools: Windows debugging symbols, Process Explorer, Process Monitor
+    - SQL Tracing, ETW, WCF tracing, Fiddler / proxy, Ethereal / WireShark
+    - Mini-dumps
+    - Performance counters
+    - .NET Performance analyzers (e.g. dotTrace)
+    - Remote debugging
+    - Process: observe, hypothesis, test, repeat 

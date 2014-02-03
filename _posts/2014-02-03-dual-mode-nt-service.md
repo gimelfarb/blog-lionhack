@@ -156,13 +156,14 @@ You can now just double-click the EXE and it will start in "console mode" automa
 
 If application issues a call to `ServiceBase.Stop()` method, then the expectation is that the service will gracefully shutdown. With the presented code in "console mode" this won't happen, because application is locked in the infinite loop waiting for the ESC keypress.
 
-Easiest way to get around this is to create a custom base class for your Windows Services, which overrides `OnStop()` method:
+`ServiceBase.Stop()` will in turn call overridden `OnStop()` method of your class, where normally you'd implement application clean up logic for all the entities allocating during `OnStart()`.
+
+Easiest way to make sure application is stopped at this point, in "console mode", is to create a custom base class for your Windows Services, which overrides `OnStop()` method:
 
 <pre><code class="language-clike">
 public class DualServiceBase : ServiceBase {
     protected override void OnStop() {
-        var prop = typeof(ServiceBase).GetProperty("ServiceHandle", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (Environment.UserInteractive && (IntPtr)prop.GetValue(service, null) == IntPtr.Zero)
+        if (Environment.UserInteractive && this.ServiceHandle == IntPtr.Zero)
         {
             Console.WriteLine("Service terminated - press any key to exit");
             Console.ReadKey(true);
@@ -172,6 +173,75 @@ public class DualServiceBase : ServiceBase {
 }
 </code></pre>
 
+We have to check `ServiceHandle` for a case when running in "service mode", but with access to interactive desktop.
+
+Now we just change our main Service class to inherit from `DualServiceBase` and we're set!
 
 ## Putting it all together
 
+We can now put all of this together into a single class `DualServiceBase`, that should probably go into a common library, to be reused by any Windows Service project you're developing. Just follow these steps:
+
+  - Make sure project type is set to **Console Application**
+  - Modify `Main()` method to use `DualServiceBase.Run`
+  - Change the base class from `ServiceBase` to `DualServiceBase`
+
+<pre><code class="language-clike">
+static void Main(string[] args)
+{
+    var ServicesToRun = new DualServiceBase[] 
+    { 
+        new Service1() 
+    };
+
+    DualServiceBase.Run(ServicesToRun);
+}
+
+public class DualServiceBase : ServiceBase 
+{
+    protected override void OnStop() 
+    {
+        if (Environment.UserInteractive && this.ServiceHandle == IntPtr.Zero)
+        {
+            Console.WriteLine("Service terminated - press any key to exit");
+            Console.ReadKey(true);
+            Environment.Exit(0);
+        }
+    }
+
+    public static void Run(DualServiceBase[] services) {
+        if (Environment.UserInteractive) {
+            // Console version
+            ConsoleRun(services);
+        } else {
+            // Windows Service version
+            ServiceBase.Run(services);
+        }
+    }
+
+    static void ConsoleRun(DualServiceBase[] services)
+    {
+        // NOTE: Don't need Reflection to call OnStart/OnStop anymore
+        // because we are inside DualServiceBase class definition!
+ 
+        foreach (var service in services)
+        {
+            Console.WriteLine("Starting {0} ...", service.ServiceName);
+            service.OnStart(Environment.GetCommandLineArgs());
+        }
+        Console.WriteLine("Service(s) running - Press ESC to exit");
+        ConsoleKeyInfo key;
+        while (true)
+        {
+            // Loop until 'ESC' is pressed
+            key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.Escape) break;
+        }
+        foreach (var service in services)
+        {
+            service.OnStop();
+        }
+    }
+}
+</code></pre>
+
+There you go. Enjoy a cleaner, more productive debugging experience of your Windows Service projects!

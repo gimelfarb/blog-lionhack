@@ -1,13 +1,16 @@
 # Blog posts to write
 
-  - Stack trace line numbers
   - Multi-targeting assemblies (2.0, 4.0, 4.5)
+    - TODO: investigate Portable Class Libraries and how they are deployed to earlier versions (there is a problem referencing mscorlib v2.0.5.0 on a machine with .NET 4.0 only installed)
+    - TODO: address problems when OutDir is overridden (TFS Builds)
+  - Dual-mode NT service
   - Visual Studio Online
     - Git source control
     - Scrum work item process
     - Automated build & deploy
   - Node.js vs ASP.NET Performance
     - Apache Bench tests, Node single-thread on multi-core
+    - Linux vs Windows (VMs)
   - .NET Exception handling
     - Mini-dumps, first-chance exceptions
     - Global hooks
@@ -32,3 +35,14 @@
     - .NET Performance analyzers (e.g. dotTrace)
     - Remote debugging
     - Process: observe, hypothesis, test, repeat 
+  - MSBuild Customizations
+    - Reading core MSBuild targets files
+    - Injecting actions into standard build
+    - Visual Studio vs TFS builds
+  - Branching strategies
+  - Automated builds
+    - Versioning assemblies & builds
+  - Software team management
+  - Hiring good developers
+    - Good vs not-so-good developers (productivity 20x)
+    - How to tell if developer is good

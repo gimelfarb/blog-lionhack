@@ -33,6 +33,13 @@ Make sure to import it **AFTER** the common targets (e.g. "Microsoft.CSharp.targ
 
 Create **BuildCommon.targets**:
 
+    <?xml version="1.0" encoding="utf-8"?>
+    <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+        <!-- Below snippets go here -->
+    </Project>
+
+Inject a new target into the default build process:
+
     <!--
         Defining custom Targets to execute before project compilation starts.
     -->
@@ -47,11 +54,9 @@ Create **BuildCommon.targets**:
 
     <!--
         Creates modified version of AssemblyInfo.cs, replaces [AssemblyVersion] attribute with the one 
-        specifying actual build version (from MSBuild properties), and includes that file instead of the 
-        original AssemblyInfo.cs in the compilation.
+        specifying actual build version (from MSBuild properties), and includes that file instead of the original AssemblyInfo.cs in the compilation.
         
-        Works with both, .cs and .vb version of the AssemblyInfo file, meaning it supports C# and VB.Net
-        projects simultaneously.
+        Works with both, .cs and .vb version of the AssemblyInfo file, meaning it supports C# and VB.Net projects simultaneously.
     -->
     <Target Name="CommonBuildDefineModifiedAssemblyVersion" Condition="'$(VersionAssembly)' != ''">
         <!-- Find AssemblyInfo.cs or AssemblyInfo.vb in the "Compile" Items. Remove it from "Compile"
@@ -67,8 +72,7 @@ Create **BuildCommon.targets**:
               DestinationFiles="@(OriginalAssemblyInfo->'$(IntermediateOutputPath)%(Identity)')">
             <Output TaskParameter="DestinationFiles" ItemName="ModifiedAssemblyInfo"/>
         </Copy>
-        <!-- Replace the version bit (in AssemblyVersion and AssemblyFileVersion attributes) using regular
-             expression. Use the defined property: $(VersionAssembly). -->
+        <!-- Replace the version bit (in AssemblyVersion and AssemblyFileVersion attributes) using regular expression. Use the defined property: $(VersionAssembly). -->
         <Message Text="Setting AssemblyVersion to $(VersionAssembly)" />
         <RegexUpdateFile Files="@(ModifiedAssemblyInfo)"
                     Regex="Version\(&quot;(\d+)\.(\d+)(\.(\d+)\.(\d+)|\.*)&quot;\)"

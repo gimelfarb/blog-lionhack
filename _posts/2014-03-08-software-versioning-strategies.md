@@ -6,13 +6,13 @@ Some of the techniques will be geared towards Microsoft stack (Windows, .NET), a
 
 ## Versions Everywhere
 
-We are all pretty used to the term "version" nowadays. Most commonly used in the software world, it had leaked into the media and other industries. Movie sequels are being versioned - ["Fast & Furious 7"][ff7] (7!?), shoes are being versioned - ["Air Jordan XX8"][ajxx8], and, most popularly, books are being versioned - ["One Minute Manager, 1984 edition"][om1984]. Actually, looking at books, people have been versioning for some time now - ["Encyclopedia Britannica"][eb], since 1768!.
+We are all pretty used to the term "version" nowadays. Most commonly used in the software world, it had leaked into the media and other industries. Movie sequels are being versioned - ["Fast & Furious 7"][ff7] (7!?), shoes are being versioned - ["Air Jordan XX8"][ajxx8], and, most popularly, books are being versioned - ["One Minute Manager, 1984 edition"][om1984]. Actually, looking at books, people have been versioning for quite some time now - ["Encyclopedia Britannica"][eb], since 1768!.
 
-The premise is simple - as products live on and continue to improved, newer releases have to be distinguished from the previous ones. Product name does not change, because market has already become familiar with it, so something is appended at the end to indicate that it is **newer** (or **different**).
+The premise is simple - as products live on and continue to be improved, newer releases have to be distinguished from the previous ones. Product name does not change, because market already became familiar with it, so something is appended at the end to indicate that it is **newer** (or **different**).
 
-While versioning existed long before the digital age, software really pushed the issue forward. Modifying and releasing new copy of software is a very quick process, magnitude of times faster than it is to change an industrial production line to produce a new piece of clothing or print a new book edition. Thus software cycles are much **faster**, and a potential for a lot of **concurrent editions** is much greater.
+While _versioning_ existed long before the digital age, software really pushed the issue forward. Modifying and releasing a new copy of software is a very quick process, many times faster than it is to change an industrial production line to produce a new piece of clothing or print a new book edition. Thus software iteration cycles are much **shorter**, and a potential for a lot of **concurrent editions** is much greater.
 
-Simply using years (or even months), as in book editions, is not sufficient. New versions of software can be produced within minutes. In addition, software has a massive parallel aspect to it - **software streams** - where several major versions can exist, and all can be continuously updated at the same time. This rarely happens with your shoes. (I wish it did though, sometimes I just don't want to upgrade to this year's catalog model, I want an improvement to my old pair!)
+Simply using years (or even months), as in book editions, is not sufficient. New versions of the software can be produced within minutes. In addition, software has a massive parallel aspect to it - **software streams** - where several major versions can exist, and all can be continuously updated at the same time. This rarely happens with your shoes. (I wish it did though, sometimes I just don't want to upgrade to this year's catalog model, I want an improvement to my old pair!)
 
 [ff7]: http://www.imdb.com/title/tt2820852/
 [ajxx8]: http://www.footlocker.com/_-_/keyword-history+of+air+jordan
@@ -21,9 +21,9 @@ Simply using years (or even months), as in book editions, is not sufficient. New
 
 ## Why Version?
 
-Before diving into **how** to implement versioning, let's stop and consider **why** we would want to do it in the first place! After all, if we know the exact reasons why it is useful, then we can better judge whether proposed solutions are a fit.
+Before diving into **how** to implement versioning, let's stop and consider **why** we would want to do it in the first place! After all, if we know the exact reasons of why it is useful, then we can better judge whether the proposed solutions are a fit.
 
-We've alluded to this in the previous section, referring to what's called a **public version**. This is the version that is publicly visible, and mostly carries marketing weight (it is most likely to be defined by marketing/sales department). "Windows 7", "iPhone 5S", "Office 2013" - are all examples of a public version.
+We've alluded to this in the last section, referring to what's called a **public version**. This is the version that is publicly visible, and mostly carries marketing weight (i.e. it is most likely to be defined by marketing/sales department). "Windows 7", "iPhone 5S", "Office 2013" - are all examples of a public version.
 
 **Public version** is intended to be simple and memorable, indicating to customers that it is new & shiny (assuming people generally want "new & shiny"). People don't understand "10.6.6527.14789" - but they get "2013" or "5". It has been increasingly popular to use the year of release as the public version number, as it simply and powerfully conveys up-to-date status. Car manufacturers have been doing it for a long time.
 
@@ -48,19 +48,19 @@ All of this is accomplished with a **private version** number. **Public version*
 
 ### Windows
 
-In Windows you'd be pretty used to seeing a concept of a version number, it is supported by a layer of the operating system. Version numbers are embedded into all binary executable files, and can be seen when hovering over EXE/DLL in Windows Explorer, or when viewing Properties. In fact, any file that can have "resources" can have a version, since it is stored in the [VERSIONINFO][verinfo] resource.
+In Windows a concept of a version number is supported by a layer of the operating system. Version numbers are embedded into all binary executable files, and can be seen when hovering over EXE/DLL in Windows Explorer, or when viewing Properties. In fact, any file that can have "resources" can have a version, since it is stored in the [VERSIONINFO][verinfo] resource.
 
 It uses the common format we're all used to: **`major.minor.build.revision`** (e.g. "1.2.360.0"). It is important to note that each number is limited to 16-bit, and so cannot exceed 65535. This has certain implications on what we can represent with these numbers.
 
-Note that label for these numbers are not strictly defined - they are simple 4 short integers. The first two are referred to as **major** and **minor** pretty unanimously. The last two is where we see some variation, depending on the versioning scheme.
+Note that a label for these numbers is not strictly defined - they are simple 4 short integers. The first two are referred to as **major** and **minor** pretty unanimously. The last two is where we see some variation, depending on the versioning scheme.
 
-This version is most prominently used during the Windows Update process, which utilizes Windows Installer (MSI) technology to update various parts of the system. Essentially, Windows Installer follows [certain rules][msifv] to determine whether the update it is installing is newer than what's already installer. If the version is greater, then it's ok to update.
+This version is most prominently used during the Windows Update process, which utilizes Windows Installer (MSI) technology to update various parts of the system. Essentially, Windows Installer follows [certain rules][msifv] to determine whether the update it is installing is newer than what's already installed. If the version is greater, then it's ok to update.
 
 ### .NET
 
-Naturally this concept flows to the .NET Framework, which was built around many existing Windows concepts. Thus we have the [`Version` class][verclass], which follows the 4 integer paradigm. We can also define `AssemblyVersionAttribute` and `AssemblyFileVersionAttribute`, which specify an assembly version and Windows version resource respectively. 
+Naturally this concept flows to the .NET Framework, which was built around many existing Windows concepts. We have the [`Version` class][verclass], which follows the 4 integer paradigm. We can also define `AssemblyVersionAttribute` and `AssemblyFileVersionAttribute`, which specify an assembly version and Windows version resource respectively. 
 
-In .NET, assembly version exists separately from the underlying Windows `VERSIONINFO`-based version, which is what you see in Windows Explorer (or file Properties). It forms part of the assembly strong name, and is used exclusively by the .NET Framework when resolving assemblies. The two versions, assembly version and Windows file version, **can be different** - but more often they are the same, as it is much less confusing.
+In .NET, assembly version exists separately from the underlying Windows `VERSIONINFO`-based version, which is what you see in Windows Explorer (or file Properties). It forms part of the assembly strong name, and is used exclusively by the .NET Framework when resolving assemblies. The two - assembly version and Windows file version - **can be different**, but more often they are the same to avoid confusion.
 
 .NET uses version for **dependency tracking**, i.e. noting the versions of assemblies being referenced, thus making it obvious when an update breaks compatibility for application that depend on a particular library. This is a step forward from native Windows file version, which was only used during the update process, and not when referencing a library, leading to the infamous [**"DLL Hell"**][dllhell].
 
@@ -76,7 +76,7 @@ A number of symbolic links are created, e.g. `mylib.so -> mylib.so.1` and `mylib
 
 This works fairly well, as long as [everyone follows][linuxver] this [convention][linuxso]. Each library can then, in turn, load libraries it depends on in the similar manner.
 
-Linux users would also be quite familiar with the popular "Advanced Package Tool", [apt-get][aptget], ubiquitously used on Debian-derived systems like Ubuntu. Being a true Package Manager it supports installing side-by-side versions and tracking dependencies between packages. We take a closer look at advantages of Package Managers in the following sections.  
+Linux users would also be familiar with the popular "Advanced Package Tool", [apt-get][aptget], ubiquitously used on the Debian-derived systems like Ubuntu. Being a true Package Manager it supports installing side-by-side versions and tracking dependencies between packages. We take a closer look at advantages of Package Managers in the following sections.  
 
 [verinfo]: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381058(v=vs.85).aspx
 [libtool]: https://www.gnu.org/software/libtool/manual/libtool.html#Versioning
@@ -98,7 +98,7 @@ Windows and .NET binaries specify a [4-part version scheme][msver]: **major . mi
 
 Many ignore **revision** number, and focus only on **build**. Windows Installer, for example, [only has 3 components][msiprodver]. If you want your version to span both binaries and the containing package, then it is best to limit yourself to just three numbers: **major**.**minor**.**build**.
 
-In any case, the general pattern: the greater the version number, the more recent the software is.
+In any case, the **general pattern**: _the greater the version number, the more recent the software is_.
 
 A popular versioning scheme in recent years (especially among open source projects) has been dubbed **Semantic Versioning** (aka SemVer), and documented at [semver.org][semver]. It introduces a few other components, and makes version an alphanumeric string, rather than a pure number - opening a few interesting possibilities.
 
@@ -120,29 +120,29 @@ The **prerelease**, if specified, is an alphanumeric string that is used to tag 
 
 ## Versioning Non-Binary Files
 
-We covered how we can stamp a version on **binary files**. But what about **other files** comprising a software system - configuration files, images, documents, fonts, etc? How do you stamp a version on them?
+So we know how to stamp a version on the **binary files**. But what about the **other files** comprising a software system - configuration files, images, documents, fonts, etc? How do you stamp a version on them?
 
 What about web frameworks like ASP.NET (or Ruby, Node.js, Python, etc) where source files and pages can be modified in-place, and automatically updated? How can we patch a web system, i.e. update few target files, and still keep it versioned?
 
-The answer is - **don't update individual files**! There is no way for you to keep a meaningful version number for your software application, if individual non-binary files can be updated ad-hoc as hotfixes. Update using a **package** instead.
+The answer is - **don't update individual files**! There is no way for you to keep a meaningful version number for your software application, if individual non-binary files can be updated ad-hoc as hotfixes. 
 
-Below we discuss the importance of a **package** and options for creating one.
+Update using a **package** instead.
 
 ## Importance of Build and Package
 
-When you hear the term "build", normally **compilation** comes to mind - most compiled languages, such as C#, C++ or Java, have to be compiled into a binary before being able to be executed. And so **building** is commonly associated with the process of **compiling**.
+When you hear the term "build", normally the **compilation** comes to mind - most compiled languages, such as C#, C++ or Java, have to be compiled into a binary before being able to be executed. And so **building** is commonly associated with the process of **compiling**.
 
 But that's not an entire picture. Some languages or frameworks, such as Python or ASP.NET, don't strictly require compilation. They can be either interpreted, in Python's case, or compiled on-the-fly, in ASP.NET's case. What should a **build** do for these systems? How do you "build" a Python app?
 
-That's why it is more helpful to think of **build** as an **assembly process**, or simply **packaging**. Just like a line of consumer goods, such as shoes, gets packaged before shipping to the stores, so does a software system, before being released.
+That's why it is more helpful to think of **build** as an **assembly process**, or simply **packaging**. Just like a line of consumer goods, e.g. shoes, gets packaged before shipping to the stores, so does a software system, before being released.
 
-**Package** concept is essential to **versioning**, because a package is a single collection of the pieces that comprise a software system, or part of it, and can therefore be identified, and **stamped with a version**. With a right Package Management system (which we look at in the next section), it can be deployed and updated, and specify dependencies on other packages.
+A **package** concept is essential to **versioning**, because a package is a single collection of the pieces that comprise a software system, or part of it, and can therefore be identified, and **stamped with a version**. With the right Package Management system (which we look at in the next section), it can be deployed and updated, and specify dependencies on the other packages.
 
 Software today is never a single binary executable file - it is a collection of various binaries, libraries, documents, configuration files, images, and other resources. A **package** is what helps us group them together, version and release to the outside world.
 
-A **package** doesn't have to be sophisticated, although it helps in some situations (e.g. databases). It can even be a simple ZIP file, that can contain version in the file name, or embedded as a text file. In fact, many open source projects do just that - the release is a ZIP or a .tar.gz archive.
+A **package** doesn't have to be sophisticated, although it helps in some situations (e.g. databases). It can even be a simple ZIP file, that can contain version in the file name, or embedded as a text file. In fact, many open source projects do just that - a release is a ZIP or a .tar.gz archive.
 
-The important thing is that a **package** is a single unit, that is released and updated at the same time, leading to consistency. It is common to have several packages, for example, representing "client" and "server" components, or any other logical grouping applicable to a software system. Each **package** can then be updated on its own.
+The important thing is that a **package** is a single unit, that is released and updated at the same time, leading to **consistency**. It is common to have several packages, for example, representing "client" and "server" components, or any other logical grouping applicable to a software system. Each **package** can then be updated on its own.
 
 ## Packaging
 
@@ -152,13 +152,13 @@ Let's take a look at some of the common **packaging** methods, the versioning ap
 
 **Best Suited**: Complete Windows GUI Applications, Windows Services, or Drivers
 
-The oldest, and for a long time the only recommended way, to install applications on a Windows platform. It has built-in versioning support and a sophisticated (some would say "complicated") [set of rules][msifilever] for determining when to update components. While a Windows Installer package (.msi) is a single file, in essence it is a collection of small logical components (down to single files) that can be updated independently.
+The oldest, and for a long time the only recommended way, to install applications on a Windows platform. It has a built-in versioning support and a sophisticated (some would say "complicated") [set of rules][msifilever] for determining when to update components. While a Windows Installer package (.msi) is a single file, in essence, it is a collection of small logical components (down to single files) that can be updated independently.
 
-Windows Installer will actually [check each individual file][msifilecheck] that is being installed, whether it has a version and whether the version is greater than a file with the same name already installed. That means it is important to version not just the installer package, but each file contained in it. It also means that **it is incredibly difficult to do downgrades** (i.e. rollbacks) with Windows Installer.
+Windows Installer will actually [check each individual file][msifilecheck] that is being installed, whether it has a version and whether the version is greater than a file with the same name already installed. That means it is important to version not just the installer package, but each file contained in it. But it also means that **it is incredibly difficult to do downgrades** (i.e. rollbacks) with Windows Installer.
 
 It is best suited for traditional Windows Applications (GUI, services, drivers) that are released to the public. It is, however, not the best choice for internally developed & distributed applications, any kind of Web applications, or database systems.
 
-It was also used to deploy distributable libraries (native DLLs) and COM objects, but with today's focus on .NET, it is not the mechanism for distributing .NET libraries.
+It was also used to deploy distributable libraries (native DLLs) and COM objects, but with today's focus on .NET, it is not the right mechanism for distributing .NET libraries.
 
 [msipatching]: http://msdn.microsoft.com/en-us/library/aa370579(v=vs.85).aspx
 [msifilever]: http://msdn.microsoft.com/en-us/library/aa368599(v=vs.85).aspx
@@ -180,7 +180,7 @@ In addition, it has **no inherent support for versioning**.
 
 **Best Suited**: Shared Libraries, Dependencies, Command-line Utilities
 
-Package Managers are great for releasing and versioning shared components, and tracking dependencies between them. For example, if you have a shared library that you want others to use, then Package Manager allows you to publish multiple versions side-by-side, and for consumers of the library to reference the version they depend on. Package Managers can resolve all inter-package dependencies, and retrieve only the versions that are expected. In effect, Package Managers solve the ["DLL Hell"][dllhell] problem.
+Package Managers are great for releasing and versioning shared components, and tracking dependencies between them. For example, if you have a shared library that you want others to use, then a Package Manager allows you to publish multiple versions side-by-side, and for consumers of the library to reference the version they depend on. Package Managers can resolve all inter-package dependencies, and retrieve only the versions that are expected. In effect, Package Managers solve the ["DLL Hell"][dllhell] problem.
 
 They are best used during development, to resolve library dependencies. However some Package Manager, like [Chocolatey][cinst] for Windows or [apt-get][aptget] for Ubuntu, are geared towards installing complete software.
 
@@ -204,7 +204,7 @@ Other development environments have their own - [npm][npm] for Node.js, [pip][pi
 
 **Best Suited**: Internally Developed & Deployed Software
 
-Using [NuGet][nuget] as the packaging and versioning shell, it is similar to an installer, only driven by [PowerShell][powershell], meaning infinite flexibility in how the software is to be deployed. PowerShell has already great support for configuring Windows Services, IIS Web Applications, Scheduled Tasks, SQL Server, and more.
+Octopus uses [NuGet][nuget] as the packaging and versioning shell. It is similar to an installer, only driven by [PowerShell][powershell], meaning infinite flexibility in how the software is to be deployed. PowerShell already has a great support for configuring Windows Services, IIS Web Applications, Scheduled Tasks, SQL Server, and more.
 
 For internally developed and distributed software (i.e. for a company running home-grown software solutions) this is a perfect release management vehicle. Packages are versioned and pushed to a shared NuGet feed (e.g. a network share), from where [Octopus Deploy][octopus] can release and deploy each package into the appropriate environment.
 
@@ -215,7 +215,7 @@ NuGet here plays a role of the application package/container, with a version sta
 
 ## Versioning & Packaging Databases
 
-**Database versioning** is one of the biggest challenges in software projects. Almost every team I encountered, either completely ignored it or had something inadequate in place. It certainly presents a challenge - database systems **mix data/scheme definition with actual live data**, and there is no single "file" that can be effectively versioned.
+**Database versioning** is one of the biggest challenges in software projects. Almost every team I encountered, either completely ignored it or had something inadequate in place. It certainly presents a challenge - database systems **mix schema definition with actual live data**, and there is no single "file" that can be effectively versioned.
 
 We have to recognize the database as an integral part of the software system. One that executes on a proprietary 3rd-party platform (SQL Server, Oracle, PostgreSQL, etc), but the source of which is part of the software definition. It can be compared to **script-based** systems, such as Node.js or Python, only the scripts are written in a SQL dialect.
 
@@ -223,9 +223,9 @@ There are essentially three popular approaches to database versioning, that supp
 
 ### DB - Migrations
 
-"Migrations" is a concept where developers keep a set of organized SQL script files, numbered sequentially, where each script applies modifications to the target DB to bring it to the expected state. Whenever a change is needed to the application database, a developer creates a new _migration_ script that applies the delta changes.
+**"Migrations"** is a concept where developers keep a set of organized SQL script files, numbered sequentially, where each script applies modifications to the target DB to bring it to the expected state. Whenever a change is needed to the application database, a developer creates a new _migration_ script that applies the delta changes.
 
-All of the scripts are kept as part of the source control, and are packaged with the application (either embedded into the executable binary, or installed along-side). A _migrations_ library then checks the target database for a dedicated table which holds the last "migration script number" applied, and then runs scripts with number greater than that, in order, effectively applying all of the changes in turn.
+All of the scripts are kept as part of the source control, and are packaged with the application (either embedded into the executable binary, or installed along-side). A _migrations_ library then checks the target database for a dedicated table which holds the last "migration script number" applied, and then runs all the scripts with a number greater than that in order, effectively applying all of the changes in turn.
 
 While this approach is simple to implement, and is favored among several popular frameworks ([Ruby Rails][railsmigrate], [Entity Framework][efcodefirstmigrate]), it has a number of **significant short-comings**. Firstly, there is **no single source view** of all database objects (i.e. tables, stored procedures, etc), they are sprinkled through the multiple _migration_ scripts. It is not clear which of the scripts contains which of the modifications. One has to "replay" them all to generate a database, and then look directly in the database (rather than source code).
 
@@ -233,7 +233,7 @@ Secondly, the _migration scripts number_ becomes the "version" of the database, 
 
 Thirdly, developers **have to be disciplined enough** to follow the structure and apply ALL changes through _migration scripts_. Furthermore, when developing and debugging locally, one often has to go through several iterations before getting that table or store procedure change right. Yet only the final changes should make it into the _migration script_, meaning they have to be remembered and written manually. Otherwise, _migration scripts_ would contain all of the intermediate changes made by all developers on the project. It is easy to see how that can grow out of proportion quickly.
 
-Finally, there is an argument that _migration scripts_ are a "history of changes", and it is a bit of a redundancy to store them in source control, which already IS a "history" of code changes. We would be storing **a history of a history**. There's something philosophical about that.
+Finally, there is an argument that _migration scripts_ are a "history of changes", and it is a bit of a redundancy to store them in source control, which already **is** a "history" of code changes. We would be storing **a history of a history**. There's something philosophical about that.
 
 **Pros:**
 
@@ -254,7 +254,7 @@ Finally, there is an argument that _migration scripts_ are a "history of changes
 
 ### DB - SQL Compare
 
-Most often this is used in _manual_ approach, comparing a database between two environments (e.g. development vs test) to copy over the changes. We are considering an _automated_ approach, suitable for the packaging and versioning strategies being discussed.
+Most often this is used in a _manual_ approach, comparing a database between two environments (e.g. development vs test) to copy over the changes. We are considering an _automated_ approach, suitable for the packaging and versioning strategies being discussed.
 
 In source control, database is represent by a series of _creation scripts_ (e.g. to create tables, stored procedures, triggers, etc), such that a new database with the right schema can be created from scratch. Usually each script file logically represents a corresponding object in the database, e.g. _Table1.sql_ would be the create script for _Table1_  table. All of the scripts are included in the released package (sometimes even combined into a large single create script, by concatenating them).
 
@@ -264,7 +264,7 @@ The advantage of this approach is that it is robust against the target database 
 
 In this case, target database is considered as a _runtime environment_, and we **avoid having the issue of _versioning_ it**. Instead we _version_ the package that contains all of the _creation scripts_, which is much easier, and use it to synchronize target database with what's expected in each version.
 
-Big disadvantage of this approach is the difficulty of getting it right - there is no off-the-shelf framework that would support it, and it has to be developed. For SQL Server, read the next section for a better approach. For others, some day I may put together the set of scripts and logic necessary to achieve this, based on some of my prior work (unless someone else beats me to it).
+The **big disadvantage** of this approach is the difficulty of **getting it right** - there is no off-the-shelf framework that would support it, and it has to be developed. For SQL Server, read the next section for a better approach. For others, some day I may put together the set of scripts and logic necessary to achieve this, based on some of my prior work (unless someone else beats me to it).
 
 [rgsqlcomp]: http://www.red-gate.com/products/sql-development/sql-compare/
 [xsqlcomp]: http://www.xsql.com/products/sql_server_schema_compare/
@@ -281,7 +281,7 @@ Big disadvantage of this approach is the difficulty of getting it right - there 
 
 ### DB - DACPAC (SQL Server)
 
-For SQL Server there is now a new recommended approach - DACPAC, and it can be produced by Visual Studio 2012 and above, if using SQL Server database project. Really this is a slick variation of the "SQL Compare" method above, just Microsoft has done all the heavy lifting for you!
+For SQL Server there is now a new recommended approach - DACPAC, and it can be produced by Visual Studio 2012 and above, if using the SQL Server database project. Really, this is a slick variation of the "SQL Compare" method above, just that Microsoft has done all the heavy lifting for you!
 
 Essentially, DACPAC is a zip package which contains an XML schema model of what the target database should look like. It is compiled by Visual Studio based on the _creation scripts_ in your project. In fact, it represents that _temporary pristine database_ that we would have had to create manually. Only it is done automatically and the schema represented in an XML format. The real bonus is that a **DACPAC can be _versioned_**, i.e. its metadata supports storing a version number.
 
@@ -330,7 +330,7 @@ Basically, **One build** = **One version**!
 
 **Release** build is the one that will potentially be released to public or a particular environment - test, staging, production, etc. That's the build that needs to be consistently versioned to keep track of changes that are included and to link back to the source code at the time of compilation.
 
-Note that **Release** builds can scheduled - it is popular to have a **Daily** or **Nightly** build. In most situations it should be the **Release** build, i.e. it should be versioned and packaged ready to be released.
+Note that the **Release** build can scheduled - it is popular to have a **Daily** or **Nightly** build. In most situations it should be the **Release** build, i.e. it should be versioned and packaged ready to be released.
 
 **Continuous Integration** builds run whenever someone commits to the repository and are used to validate that the code compiles, and passes unit tests. There is no need to version this build, as it is not intended to be released. 
 
